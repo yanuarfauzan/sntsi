@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImportController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,7 @@ use App\Http\Controllers\VillageController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\NeighborhoodController;
+use Symfony\Component\Routing\Loader\Configurator\ImportConfigurator;
 
 Route::get('/', function () {
     return redirect('login');
@@ -48,4 +50,12 @@ Route::middleware('auth')->group(function () {
     Route::get('neighborhoods/{neighborhood}', [NeighborhoodController::class, 'edit']);
     Route::post('neighborhoods/{neighborhood}', [NeighborhoodController::class, 'update']);
     Route::delete('neighborhoods/{neighborhood}/{neighborhoodImage}', [NeighborhoodController::class, 'destroy']);
+
+    Route::get('import-excel', [ImportController::class, 'importExcel']);
+    Route::post('do-import-neighborhood', [ImportController::class, 'doImportNeighborhood']);
+    Route::post('do-import-village', [ImportController::class, 'doImportVillage']);
+    Route::post('do-import-district', [ImportController::class, 'doImportDistrict']);
+    Route::post('do-import-city', [ImportController::class, 'doImportCity']);
+
+    
 });

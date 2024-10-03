@@ -84,6 +84,13 @@
                         <span>City</span>
                     </a>
                 </li>
+                
+                <li class="sidebar-item">
+                    <a href="{{ url('import-excel') }}" class='sidebar-link'>
+                        <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                        <span>Import Excel</span>
+                    </a>
+                </li>
 
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>

@@ -69,10 +69,10 @@ class LandingHome extends Component
         $this->map = 'PETA/administrasi/' . $neighborhood->district->name . '.jpg';
         $this->chartDataNegativeList = [
             'labels' => [
-                'Sempadan rel',
-                'Sempadan sungai',
+                'rel',
+                'sungai',
                 'Sutet',
-                'Kolong jembatan',
+                'Kol jembatan',
             ],
             'values' => [
                 $neighborhood->house->rail ?? 5,
@@ -86,7 +86,7 @@ class LandingHome extends Component
             'labels' => [
                 'Banjir',
                 'Rob',
-                'Tanah longsor',
+                'longsor',
                 'Lainnya'
             ],
             'values' => [

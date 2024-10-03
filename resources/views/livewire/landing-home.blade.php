@@ -389,8 +389,8 @@
                                     <strong>Diagram kawasan negatif list</strong>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <canvas id="NegativeListChart" width="400" height="200"></canvas>
+                            <div class="card-body p-0 mb-4" style="height: 240px">
+                                <canvas id="NegativeListChart" style="width: 100%; height: 100%;"></canvas>
                             </div>
                         </div>
                         <div class="card bg-white border-component w-100 px-4 pt-4">
@@ -399,8 +399,8 @@
                                     <strong>Diagram kawasan Rawan Bencana</strong>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <canvas id="KawasanRawanBencanaChart" width="400" height="215"></canvas>
+                            <div class="card-body p-0 mb-4" style="height: 235px">
+                                <canvas id="KawasanRawanBencanaChart" style="width: 100%; height: 100%;"></canvas>
                             </div>
                         </div>
                     </div>
@@ -441,7 +441,7 @@
         Livewire.on('getChartDataNegativeList', (chart) => {
             const ctxNegativeList = document.getElementById('NegativeListChart').getContext('2d');
             new Chart(ctxNegativeList, {
-                type: 'pie',
+                type: 'bar',
                 data: {
                     labels: chart[0].labels,
                     datasets: [{
@@ -468,6 +468,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             position: 'top'
@@ -476,6 +477,43 @@
                             callbacks: {
                                 label: function(tooltipItem) {
                                     return tooltipItem.label + ': ' + tooltipItem.raw;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 45,
+                                minRotation: 0
+                            },
+                            title: {
+                                display: true,
+                                text: 'Kawasan Negatif list', // Label untuk sumbu X
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: Math.max(...chart[0].values) + 10,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    if (Number.isInteger(value)) {
+                                        return value;
+                                    }
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'jumlah yang terkena', // Label untuk sumbu Y
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
                                 }
                             }
                         }
@@ -491,7 +529,7 @@
             const ctxKawasanRawan = document.getElementById('KawasanRawanBencanaChart').getContext(
                 '2d');
             new Chart(ctxKawasanRawan, {
-                type: 'pie',
+                type: 'bar',
                 data: {
                     labels: chart[0].labels,
                     datasets: [{
@@ -518,6 +556,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             position: 'top'
@@ -529,9 +568,46 @@
                                 }
                             }
                         }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 45,
+                                minRotation: 0
+                            },
+                            title: {
+                                display: true,
+                                text: 'Rawan Bencana', // Label untuk sumbu X
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: Math.max(...chart[0].values) + 10,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    if (Number.isInteger(value)) {
+                                        return value;
+                                    }
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'jumlah yang terkena', // Label untuk sumbu Y
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
                     }
                 }
             });
-        })
-    })
+        });
+    });
 </script>

@@ -207,8 +207,8 @@
                                     <strong>Diagram sanitasi</strong>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <canvas id="SanitationChart" width="400" height="200"></canvas>
+                            <div class="card-body p-0 mb-4" style="height: 290px">
+                                <canvas id="SanitationChart" style="width: 100%; height: 100%;"></canvas>
                             </div>
                         </div>
                         <div class="card bg-main w-100 p-4">
@@ -251,7 +251,7 @@
                                     @endswitch
                                 </div>
                             </div>
-                            <div class="row mb-2">
+                            <div class="row">
                                 <div class="col-8">APBN</div>
                                 <div class="col-4 text-end">
                                     @switch($fundValue)
@@ -308,7 +308,7 @@
             Livewire.on('getChartSanitation', (chart) => {
                 const ctxSanitation = document.getElementById('SanitationChart').getContext('2d');
                 new Chart(ctxSanitation, {
-                    type: 'pie',
+                    type: 'bar', // Chart diatur sebagai 'bar'
                     data: {
                         labels: chart[0].labels,
                         datasets: [{
@@ -335,9 +335,10 @@
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false, // Agar chart bisa menyesuaikan ukuran container-nya
                         plugins: {
                             legend: {
-                                position: 'top'
+                                position: 'top' // Posisi legend di bagian atas
                             },
                             tooltip: {
                                 callbacks: {
@@ -346,9 +347,47 @@
                                     }
                                 }
                             }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    autoSkip: false,
+                                    maxRotation: 45, // Label sumbu X bisa dirotasi agar terbaca
+                                    minRotation: 0
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Tidak terlayani/memiliki', // Label untuk sumbu X
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                max: Math.max(...chart[0].values) +
+                                10, // Mengatur agar max pada sumbu Y lebih dari nilai maksimum
+                                ticks: {
+                                    stepSize: 1,
+                                    callback: function(value) {
+                                        if (Number.isInteger(value)) {
+                                            return value; // Menampilkan hanya angka bulat
+                                        }
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Jumlah Suara', // Label untuk sumbu Y
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                }
+                            }
                         }
                     }
                 });
-            })
-        })
+            });
+        });
     </script>

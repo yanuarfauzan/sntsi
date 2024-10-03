@@ -53,9 +53,9 @@ class Sanitation extends Component
         $this->dispatch('getIpalImagePath', $neighborhood->ipalImagePath);
         $this->chartSanitation = [
             'labels' => [
-                'Tidak Terlayani Sanitasi',
-                'Tidak Memiliki MCK',
-                'Tidak Memiliki Septitank',
+                'Sanitasi',
+                'MCK',
+                'Septitank',
             ],
             'values' => [
                 0,
