@@ -24,11 +24,11 @@ Route::get('/air-bersih', [LandingPageController::class, 'airBersih'])->name('ai
 Route::get('/lokasi-kawasan/{id?}', [LandingPageController::class, 'lokasiKawasan'])->name('lokasi-kawasan');
 Route::get('/import', [LandingPageController::class, 'import'])->name('import');
 Route::post('/do-import/{districtId}/{villageId}', [LandingPageController::class, 'doImport'])->name('doImport');
-Route::get('/export/{id}/{fundValue}', [LandingPageController::class, 'exportData'])->name('export'); 
-Route::get('/clear-cache', function() {
+Route::get('/export/{id}/{fundValue}', [LandingPageController::class, 'exportData'])->name('export');
+Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     return "Cache is cleared";
-}); 
+});
 
 Auth::routes(['register' => false, 'reset' => false, 'password.confirm' => false, 'verify' => false]);
 
@@ -53,9 +53,4 @@ Route::middleware('auth')->group(function () {
 
     Route::get('import-excel', [ImportController::class, 'importExcel']);
     Route::post('do-import-neighborhood', [ImportController::class, 'doImportNeighborhood']);
-    Route::post('do-import-village', [ImportController::class, 'doImportVillage']);
-    Route::post('do-import-district', [ImportController::class, 'doImportDistrict']);
-    Route::post('do-import-city', [ImportController::class, 'doImportCity']);
-
-    
 });

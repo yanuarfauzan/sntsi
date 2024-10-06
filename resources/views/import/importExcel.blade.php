@@ -23,7 +23,8 @@
     <section class="row mb-4">
         <div class="col-12">
             @include('layouts.validation-errors')
-            <form action="#" method="POST" enctype="multipart/form-data">
+            <form action="{{ url('do-import-neighborhood') }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 <div class="row match-height">
                     <div class="col-12">
                         <div class="card">
@@ -38,100 +39,7 @@
                                         <div class="col-md-12 col-12">
                                             <div class="form-group">
                                                 <label for="neighborhood">Excel Neighborhood</label>
-                                                <input type="file" id="neighborhood" class="form-control" name="excel">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mx-1">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-12">
-            @include('layouts.validation-errors')
-            <form action="#" method="POST" enctype="multipart/form-data">
-                <div class="row match-height">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <div class="row">
-                                        {{-- <div class="col-12">
-                                            <h6>
-                                                Negatif List
-                                            </h6>
-                                        </div> --}}
-                                        <div class="col-md-12 col-12">
-                                            <div class="form-group">
-                                                <label for="village">Excel Village</label>
-                                                <input type="file" id="village" class="form-control" name="excel">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mx-1">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-12">
-            @include('layouts.validation-errors')
-            <form action="#" method="POST" enctype="multipart/form-data">
-                <div class="row match-height">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <div class="row">
-                                        {{-- <div class="col-12">
-                                            <h6>
-                                                Negatif List
-                                            </h6>
-                                        </div> --}}
-                                        <div class="col-md-12 col-12">
-                                            <div class="form-group">
-                                                <label for="district">Excel District</label>
-                                                <input type="file" id="district" class="form-control" name="excel">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mx-1">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-12">
-            @include('layouts.validation-errors')
-            <form action="#" method="POST" enctype="multipart/form-data">
-                <div class="row match-height">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <div class="row">
-                                        {{-- <div class="col-12">
-                                            <h6>
-                                                Negatif List
-                                            </h6>
-                                        </div> --}}
-                                        <div class="col-md-12 col-12">
-                                            <div class="form-group">
-                                                <label for="city">Excel City</label>
-                                                <input type="file" id="city" class="form-control" name="excel">
+                                                <input type="file" id="neighborhood" class="form-control" name="neighborhood">
                                             </div>
                                         </div>
                                     </div>
