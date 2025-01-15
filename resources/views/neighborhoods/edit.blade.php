@@ -552,17 +552,80 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    {{-- <div class="col-12">
-                                                        <h6>
-                                                            Negatif List
+                                                    <div class="col-12">
+                                                        <h6 class="text-danger">
+                                                            *format nama file wajib sesuai contoh dibawah:
+                                                            <br>
+                                                            lokasi kawasan : lokasi_1.jpg
+                                                            <br>
+                                                            sepadan sungai : sungai_1.jpg
+                                                            <br>
+                                                            sepadan rel : rel_1.jpg
+                                                            <br>
+                                                            rawan bencan banjir : banjir_1.jpg
+                                                            <br>
+                                                            rawan bencana longsor : longsor_1.jpg
+                                                            <br>
+                                                            sutet : sutet_1.jpg
+                                                            <br>
+                                                            kolong jembatan : jembatan_1.jpg
+                                                            <br>
+                                                            <br>
+                                                            *format file wajib .jpg
                                                         </h6>
-                                                    </div> --}}
+                                                    </div>
                                                     <div class="col-md-12 col-12">
                                                         <div class="form-group">
                                                             <label for="images">Foto</label>
                                                             <input type="file" id="images"
                                                                 class="form-control image-preview-filepond"
                                                                 name="images[]">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row match-height">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <h5>File xhp</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    {{-- <div class="col-12">
+                                                        <h6 class="text-danger">
+                                                            *format nama file wajib sesuai contoh dibawah:
+                                                            <br>
+                                                            lokasi kawasan : lokasi_1.jpg
+                                                            <br>
+                                                            sepadan sungai : sungai_1.jpg
+                                                            <br>
+                                                            sepadan rel : rel_1.jpg
+                                                            <br>
+                                                            rawan bencan banjir : banjir_1.jpg
+                                                            <br>
+                                                            rawan bencana longsor : longsor_1.jpg
+                                                            <br>
+                                                            sutet : sutet_1.jpg
+                                                            <br>
+                                                            kolong jembatan : jembatan_1.jpg
+                                                            <br>
+                                                            <br>
+                                                            *format file wajib .jpg
+                                                        </h6>
+                                                    </div> --}}
+                                                    <div class="col-md-12 col-12">
+                                                        <div class="form-group">
+                                                            <input type="file" id="xhps"
+                                                                class="form-control xhp-preview-filepond" name="xhps[]">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -594,8 +657,9 @@
                                 <div class="row mb-2 mb-md-4 gallery">
                                     @foreach ($images as $image)
                                         <div class="col-6 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2">
-                                            <img class="w-100 active" src="{{ asset($image->path) }}">
-                                            <form action="{{ url('neighborhoods', $neighborhood->id) . '/' . $image->id }}"
+                                            <img class="w-100 active" src="{{ Storage::url($image->path) }}">
+                                            <form
+                                                action="{{ url('neighborhoods', $neighborhood->id) . '/' . $image->id }}"
                                                 method="POST">
                                                 @csrf
                                                 @method('DELETE')
@@ -645,7 +709,22 @@
             FilePondPluginFileValidateType,
         )
 
-        const filepond = FilePond.create(document.querySelector(".image-preview-filepond"), {
+        const filepondImage = FilePond.create(document.querySelector(".image-preview-filepond"), {
+            credits: null,
+            allowImagePreview: true,
+            allowImageFilter: false,
+            allowImageCrop: false,
+            allowMultiple: true,
+            maxFileSize: '10MB',
+            acceptedFileTypes: ["image/png", "image/jpg", "image/jpeg"],
+            fileValidateTypeDetectType: (source, type) =>
+                new Promise((resolve, reject) => {
+                    // Do custom type detection here and return with promise
+                    resolve(type)
+                }),
+            storeAsFile: true,
+        });
+        const filepondXhp = FilePond.create(document.querySelector(".xhp-preview-filepond"), {
             credits: null,
             allowImagePreview: true,
             allowImageFilter: false,

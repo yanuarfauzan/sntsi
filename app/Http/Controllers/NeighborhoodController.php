@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\District;
-use App\Models\Neighborhood;
-use App\Models\NeighborhoodImage;
 use App\Models\Village;
-use Illuminate\Contracts\Cache\Store;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Models\District;
 use Illuminate\Support\Str;
+use App\Models\Neighborhood;
+use Illuminate\Http\Request;
+use App\Models\NeighborhoodImage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\Cache\Store;
+use Illuminate\Support\Facades\Storage;
 
 class NeighborhoodController extends Controller
 {
@@ -34,6 +35,69 @@ class NeighborhoodController extends Controller
 
     public function update(Request $request, Neighborhood $neighborhood)
     {
+        if ($request->has('images')) {
+            $village = Village::findOrFail($neighborhood->village_id);
+            $rw = $request->rw;
+            $rt = $request->rt;
+            foreach ($request->images as $image) {
+                $extension = $image->getClientOriginalExtension();
+                if ($extension != 'jpg') {
+                    return back()->with('error', 'Format file harus jpg');
+                }
+                $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                switch (true) {
+                    case explode('_', $originalName)[0] == 'lokasi':
+                        $keyPath = 'lokasi';
+                        break;
+                    case explode('_', $originalName)[0] == 'rel':
+                        $keyPath = 'rel';
+                        break;
+                    case explode('_', $originalName)[0] == 'sungai':
+                        $keyPath = 'sepadan sungai';
+                        break;
+                    case explode('_', $originalName)[0] == 'banjir':
+                        $keyPath = 'rawan bencana banjir';
+                        break;
+                    case explode('_', $originalName)[0] == 'longsor':
+                        $keyPath = 'rawan bencana longsor';
+                        break;
+                    case explode('_', $originalName)[0] == 'rob':
+                        $keyPath = 'rob';
+                        break;
+                    case explode('_', $originalName)[0] == 'sutet':
+                        $keyPath = 'sutet';
+                        break;
+                    case explode('_', $originalName)[0] == 'jembatan':
+                        $keyPath = 'kolong jembatan';
+                        break;
+                }
+                $name = $rw . '_' . $rt . '.jpg';
+                $destination = 'public/' . $village->name . '/' . $keyPath . '/' . $name;
+                $path = $village->name . '/' . $keyPath . '/' . $name;
+                Storage::put($destination, file_get_contents($image->getRealPath()));
+                $neighborhood->images()->create([
+                    'name' => $name,
+                    'path' => $path
+                ]);
+            }
+        }
+        if ($request->has('xhps')) {
+            $village = Village::findOrFail($neighborhood->village_id);
+            foreach ($request->xhps as $xhp) {
+                $extension = $xhp->getClientOriginalExtension();
+                if ($extension != 'xhp') {
+                    return back()->with('error', 'Format file harus xhp');
+                }
+                $name = $village->name . '.' . $extension;
+                $destination = 'public/PETA/xhp/' . $name;
+                $path = 'PETA/xhp/' . $name;
+                Storage::put($destination, file_get_contents($xhp->getRealPath()));
+                $neighborhood->images()->create([
+                    'name' => $name,
+                    'path' => $path
+                ]);
+            }
+        }
         $request->validate([
             'district_id' => ['required', 'numeric', 'exists:districts,id'],
             'village_id' => ['required', 'numeric', 'exists:villages,id'],
@@ -139,16 +203,6 @@ class NeighborhoodController extends Controller
             'no_septic_tank' => $request->input('sanitation.no_septic_tank'),
         ]);
 
-        if ($request->has('images')) {
-            foreach ($request->images as $image) {
-                $name = Str::random(4) . '-' . $image->getClientOriginalName();
-                $image->storePubliclyAs('neighborhood-images', $name, 'public');
-                $neighborhood->images()->create([
-                    'name' => $image->getClientOriginalName(),
-                    'path' => 'storage/neighborhood-images/' . $name
-                ]);
-            }
-        }
 
 
         return back()->with('success', 'Data berhasil disimpan.');

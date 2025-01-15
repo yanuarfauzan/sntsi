@@ -5,14 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Water extends Model
+class Total extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
-
-    public function neighborhood()
-    {
-        return $this->belongsTo(Neighborhood::class);
-    }
+    protected $table = 'total';
 }

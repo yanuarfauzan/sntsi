@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Funding;
 use App\Models\Village;
 use Livewire\Component;
 use App\Models\Neighborhood;
@@ -19,12 +20,10 @@ class LandingHome extends Component
     public $neighborhoods = [];
     public $neighborhoodsByRw = [];
     public $finalNeighborhood = [];
-    public $rw = [];
-    public $rws = [];
-    public $rt = [];
-    public $rts = [];
     public $chartDataNegativeList = [];
+    public $chartDataNegativeListByRw = [];
     public $chartDataKawasanRawan = [];
+    public $chartDataKawasanRawanByRw = [];
     public $floodImagePaths = [];
     public $landslideImagePaths = [];
     public $riverImagePaths = [];
@@ -35,6 +34,11 @@ class LandingHome extends Component
     public $map = null;
     public $typeFund = null;
     public $fundValue = null;
+    public $year = 2024;
+    public $APBDfunding;
+    public $APBDProvfunding;
+    public $APBNfunding;
+    public $negativeList;
     public $listeners = ['setDataFromHome'];
 
     public function mount($districts)
@@ -42,13 +46,9 @@ class LandingHome extends Component
         $this->districts = $districts;
     }
 
-    public function setTypeFund($type)
+    public function setDataFromHome($neighborhood, $negativeList)
     {
-        $this->typeFund = $type;
-    }
-
-    public function setDataFromHome($neighborhood)
-    {
+        $this->negativeList = $negativeList;
         $neighborhood = Neighborhood::where('id', $neighborhood['id'])->first()->load('images', 'village', 'district', 'negative_list', 'house', 'water', 'sanitation');
         $this->finalNeighborhood = $neighborhood;
         $this->floodImagePaths[] = $neighborhood->village->name . '/rawan bencana banjir' . '/' . $neighborhood->rw . '_' . $neighborhood->rt . '.jpg';
@@ -66,7 +66,7 @@ class LandingHome extends Component
         $this->dispatch('getBridgeImagePath', $this->bridgeImagePath);
         $this->dispatch('getRobImagePath', $this->robImagePath);
         $this->finalNeighborhood = $neighborhood;
-        $this->map = 'PETA/administrasi/' . $neighborhood->district->name . '.jpg';
+        $this->map = 'PETA/negatif/' . 'Negatif_Kec_' . $neighborhood->district->name . '.jpg';
         $this->chartDataNegativeList = [
             'labels' => [
                 'rel',
@@ -75,10 +75,10 @@ class LandingHome extends Component
                 'Kol jembatan',
             ],
             'values' => [
-                $neighborhood->house->rail ?? 5,
-                $neighborhood->house->river ?? 5,
-                $neighborhood->house->sutet ?? 5,
-                $neighborhood->house->bridge ?? 5
+                $negativeList['rail'],
+                $negativeList['river'],
+                $negativeList['sutet'],
+                $negativeList['bridge']
             ]
         ];
         $this->dispatch('getChartDataNegativeList', $this->chartDataNegativeList);
@@ -90,23 +90,54 @@ class LandingHome extends Component
                 'Lainnya'
             ],
             'values' => [
-                $neighborhood->house->flood ?? 5,
-                $neighborhood->house->tidal_flood ?? 5,
-                $neighborhood->house->landslide ?? 5,
-                $neighborhood->house->other ?? 5
+                $negativeList['flood'],
+                $negativeList['tidal_flood'],
+                $negativeList['landslide'],
+                $negativeList['other']
             ]
         ];
         $this->dispatch('getChartDataKawasanRawan', $this->chartDataKawasanRawan);
+
+
+        $this->chartDataNegativeListByRw = [
+            'labels' => [
+                'rel',
+                'sungai',
+                'Sutet',
+                'Kol jembatan',
+            ],
+            'values' => [
+                $this->finalNeighborhood->rail,
+                $this->finalNeighborhood->river,
+                $this->finalNeighborhood->sutet,
+                $this->finalNeighborhood->bridge
+            ]
+        ];
+        $this->dispatch('getChartDataNegativeListByRw', $this->chartDataNegativeListByRw);
+        $this->chartDataKawasanRawanByRw = [
+            'labels' => [
+                'Banjir',
+                'Rob',
+                'longsor',
+                'Lainnya'
+            ],
+            'values' => [
+                $this->finalNeighborhood->flood,
+                $this->finalNeighborhood->tidal_flood,
+                $this->finalNeighborhood->landslide,
+                $this->finalNeighborhood->other
+            ]
+        ];
+        $this->dispatch('getChartDataKawasanRawanByRw', $this->chartDataKawasanRawanByRw);
+    }
+    public function updatedYear($year)
+    {
+        $this->year = $year;
     }
     public function setTypeMap($type)
     {
         $areaName = explode('_', $type)[1] == 'Kec' ? $this->finalNeighborhood->district->name : $this->finalNeighborhood->village->name;
         $this->map = 'PETA/jenis/' . $type . '_' . $areaName . '.jpg';
-    }
-    public function setFund($value)
-    {
-        $this->fundValue = $value;
-        $this->dispatch('getFundValue', $this->fundValue);
     }
 
     public function render()

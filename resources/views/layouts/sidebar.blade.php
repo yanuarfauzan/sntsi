@@ -90,27 +90,19 @@
                         <i class="bi bi-file-earmark-arrow-up-fill"></i>
                         <span>Import Excel</span>
                     </a>
-                </li>
-
-                <li class="sidebar-item  has-sub">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-stack"></i>
-                        <span>Components</span>
+                </li>                
+                <li class="sidebar-item">
+                    <a href="http://ungu.in/PanduanPerkimSmg" class='sidebar-link' target="_blank">
+                        <i class="bi bi-book-fill"></i>
+                        <span>Unduh Manual Book</span>
                     </a>
-
-                    <ul class="submenu ">
-
-                        <li class="submenu-item">
-                            <a href="component-accordion.html" class="submenu-link">Accordion</a>
-
-                        </li>
-
-                        <li class="submenu-item">
-                            <a href="component-alert.html" class="submenu-link">Alert</a>
-
-                        </li>
-                    </ul>
                 </li>
+                {{-- <li class="sidebar-item">
+                    <a href="{{ url('import-manual-book') }}" class='sidebar-link'>
+                        <i class="bi bi-book-fill"></i>
+                        <span>Import Manual Book</span>
+                    </a>
+                </li> --}}
             </ul>
         </div>
     </div>

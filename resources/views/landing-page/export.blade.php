@@ -1,6 +1,25 @@
 <div class="container-fluid mt-2">
     <div class="row mb-4">
         <div>
+            <table style="width: 100%; margin-top: 24px; border-collapse: collapse; border-spacing: 16px;">
+                <tr>
+                    <!-- Kolom 1 -->
+                    <td
+                        style="width: 45%; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #ddd; padding: 16px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td><strong>KECAMATAN:</strong></td>
+                                <td style="text-align: right;">{{ $neighborhood->district->name ?? '' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>KELURAHAN:</strong></td>
+                                <td style="text-align: right;">{{ $neighborhood->village->name ?? '' }}</td>
+                            </tr>
+                        </table>
+                    </td>
+
+                </tr>
+            </table>
             <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100vh;">
                 @if ($map != null)
                     @if (Storage::disk('public')->exists($map))
@@ -36,24 +55,16 @@
                         style="width: 45%; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #ddd; padding: 16px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
                         <table style="width: 100%;">
                             <tr>
-                                <td><strong>KECAMATAN:</strong></td>
-                                <td style="text-align: right;">{{ $neighborhood->district->name ?? 'N/A' }}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>KELURAHAN:</strong></td>
-                                <td style="text-align: right;">{{ $neighborhood->village->name ?? 'N/A' }}</td>
-                            </tr>
-                            <tr>
                                 <td><strong>KAWASAN:</strong></td>
-                                <td style="text-align: right;">{{ $neighborhood->housing ?? 'N/A' }}</td>
+                                <td style="text-align: right;">{{ $neighborhood->housing ?? '' }}</td>
                             </tr>
                             <tr>
                                 <td><strong>RW:</strong></td>
-                                <td style="text-align: right;">{{ $neighborhood->rw ?? 'N/A' }}</td>
+                                <td style="text-align: right;">{{ $neighborhood->rw ?? '' }}</td>
                             </tr>
                             <tr>
                                 <td><strong>RT:</strong></td>
-                                <td style="text-align: right;">{{ $neighborhood->rt ?? 'N/A' }}</td>
+                                <td style="text-align: right;">{{ $neighborhood->rt ?? '' }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Jumlah rumah:</strong></td>

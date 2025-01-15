@@ -55,25 +55,25 @@
                 </div>
             </div>
             <div class="d-flex flex-column justify-content-start align-items-start gap-4 w-50">
-                <div class="card w-100">
+                {{-- <div class="card w-100">
                     <div class="card-body">
                         <div>
                             <strong>Pendanaan</strong>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6">APBD:</div>
-                            <div class="col-6 text-end">N/A</div>
+                            <div class="col-6 text-end"></div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6">APBD PROVINSI:</div>
-                            <div class="col-6 text-end">N/A</div>
+                            <div class="col-6 text-end"></div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6">APBN:</div>
-                            <div class="col-6 text-end">N/A</div>
+                            <div class="col-6 text-end"></div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="bg-component card d-flex flex-column align-items-end gap-2 w-100 box-gambar">
                     @if (Storage::disk('public')->exists($locationImagePath))
                         <div class="w-100 border-component">

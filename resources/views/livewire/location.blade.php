@@ -74,16 +74,19 @@
             <button class="btn btn-primary w-100" wire:click="applyLocation">terapkan</button>
         </div>
         <div class="col-12">
-            <strong class="text-primary">Detail lokasi kawasan</strong>
-            <p class="text-muted">
-                Melihat detail dari lokasi kawasan
-            </p>
-            <a href="{{ route('lokasi-kawasan', ['id' => $finalNeighborhood->id ?? null]) }}"
-                style="{{ $finalNeighborhood == null ? 'pointer-events: none; opacity: 0.6; cursor: not-allowed;' : '' }}"
-                class="btn btn-primary w-100" data-mdb-ripple-init>
-                Detail
+            <span class="text-muted">Akses dashboard admin</span>
+            <a href="{{ route('login') }}" class="btn btn-primary w-100" data-mdb-ripple-init>
+                Admin
             </a>
         </div>
+        @if ($applied == true)
+            <div class="col-12 mt-2">
+                <a href="{{ route('get-file-xhp', ['neighborhoodId' => $neighborhoodId]) }}"
+                    class="btn btn-primary w-100" data-mdb-ripple-init>
+                    Unduh file XHP
+                </a>
+            </div>
+        @endif
     </div>
     <div class="text-dark mb-4 mt-3">
         <strong class="text-primary">Export report</strong>
@@ -91,8 +94,70 @@
             export data dari web app
         </p>
         <div class="d-flex justify-content-start align-items-center gap-2">
-            <a href="#" class="badge rounded-pill badge-light">preview</a>
-            <a href="export/{{ $neighborhoodId }}/{{ $fundValue ?? 'rail' }}" class="badge rounded-pill badge-dark">export</a>
+            <button wire:ignore type="button" id="streamButton" class="badge rounded-pill badge-light">Preview</button>
+            <button wire:ignore type="button" id="exportButton" class="badge rounded-pill badge-dark">Export</button>
         </div>
     </div>
+    {{-- <div class="text-dark mb-4 mt-3">
+        <strong class="text-primary">Login</strong>
+        <p class="text-muted">
+            login ke cms admin untuk mengatur data
+        </p>
+        <div class="d-flex justify-content-start align-items-center gap-2">
+            <a href="#"
+            class="btn btn-primary w-100"
+            data-mdb-ripple-init>
+            Login
+        </a>
+        </div>
+    </div> --}}
 </div>
+<script>
+    function openAndDownload(event, fileUrl) {
+        console.log(fileUrl);
+
+        event.preventDefault();
+
+        window.open(fileUrl, '_blank');
+
+        const anchor = document.createElement('a');
+        anchor.href = fileUrl;
+        anchor.download = '';
+        anchor.click();
+    }
+    document.addEventListener('livewire:init', function(e) {
+
+        var streamButton = document.getElementById('streamButton');
+        var exportButton = document.getElementById('exportButton');
+
+        streamButton.disabled = true;
+        exportButton.disabled = true;
+
+        streamButton.style.opacity = 0.5;
+        streamButton.style.cursor = 'not-allowed';
+
+        exportButton.style.opacity = 0.5;
+        exportButton.style.cursor = 'not-allowed';
+
+        Livewire.on('setIdExport', function(data) {
+            var neighId = data[0];
+
+            streamButton.removeAttribute('disabled');
+            exportButton.removeAttribute('disabled');
+            streamButton.removeAttribute('style');
+            exportButton.removeAttribute('style');
+
+            console.log('streamButton disabled:', streamButton.disabled);
+            console.log('exportButton disabled:', exportButton.disabled);
+
+            streamButton.onclick = function() {
+                window.location.href = 'stream/' + neighId;
+            };
+            exportButton.onclick = function() {
+                window.location.href = 'export/' + neighId;
+            };
+
+
+        });
+    });
+</script>

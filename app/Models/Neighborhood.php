@@ -48,4 +48,8 @@ class Neighborhood extends Model
     {
         return $this->hasMany(NeighborhoodImage::class);
     }
+    public function funding() : HasMany
+    {
+        return $this->hasMany(Funding::class);
+    }
 }

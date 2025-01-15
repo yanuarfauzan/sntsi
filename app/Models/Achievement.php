@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Water extends Model
+class Achievement extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+    protected $table = 'achievements';
 
-    public function neighborhood()
+    public function funding()
     {
-        return $this->belongsTo(Neighborhood::class);
+        return $this->hasOne(Funding::class);
     }
 }

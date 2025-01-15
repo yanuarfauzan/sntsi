@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ImportController;
+use App\Models\NeighborhoodImage;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +12,6 @@ use App\Http\Controllers\VillageController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\NeighborhoodController;
-use Symfony\Component\Routing\Loader\Configurator\ImportConfigurator;
 
 Route::get('/', function () {
     return redirect('login');
@@ -23,8 +23,13 @@ Route::get('/sanitasi', [LandingPageController::class, 'sanitasi'])->name('sanit
 Route::get('/air-bersih', [LandingPageController::class, 'airBersih'])->name('air-bersih');
 Route::get('/lokasi-kawasan/{id?}', [LandingPageController::class, 'lokasiKawasan'])->name('lokasi-kawasan');
 Route::get('/import', [LandingPageController::class, 'import'])->name('import');
-Route::post('/do-import/{districtId}/{villageId}', [LandingPageController::class, 'doImport'])->name('doImport');
-Route::get('/export/{id}/{fundValue}', [LandingPageController::class, 'exportData'])->name('export');
+Route::post('/do-import/{neighborhoodId}/{villageId}', [LandingPageController::class, 'doImport'])->name('doImport');
+Route::get('/export/{id}', [LandingPageController::class, 'exportData'])->name('export');
+Route::get('/exportFunding/{houseId}/{sanitationId}/{year}', [LandingPageController::class, 'exportFunding'])->name('exportFunding');
+Route::get('/stream/{id}', [LandingPageController::class, 'streamData'])->name('stream');
+Route::post('do-import-manual-book', [ImportController::class, 'doImportManualBook']);
+Route::get('get-manual-book', [ImportController::class, 'getManualBook'])->name('get-manual-book');
+Route::get('get-file-xhp/{neighborhoodId}', [ImportController::class, 'getFileXHP'])->name('get-file-xhp');
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     return "Cache is cleared";
@@ -52,5 +57,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('neighborhoods/{neighborhood}/{neighborhoodImage}', [NeighborhoodController::class, 'destroy']);
 
     Route::get('import-excel', [ImportController::class, 'importExcel']);
+    Route::get('import-manual-book', [ImportController::class, 'importManualBook']);
     Route::post('do-import-neighborhood', [ImportController::class, 'doImportNeighborhood']);
+});
+
+Route::get('/seed-images', function() {
+    Artisan::call('db:seed', ['--class' => 'NeighborhoodImageSeeder']);
+    return 'berhasil';
 });

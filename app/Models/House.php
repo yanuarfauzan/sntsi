@@ -10,4 +10,13 @@ class House extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function funding()
+    {
+        return $this->hasMany(Funding::class);
+    }
+    public function neighborhood()
+    {
+        return $this->belongsTo(Neighborhood::class);
+    }
 }

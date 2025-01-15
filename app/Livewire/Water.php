@@ -15,13 +15,10 @@ class Water extends Component
     public $neighborhoods = [];
     public $neighborhoodsByRw = [];
     public $finalNeighborhood = [];
-    public $rw = [];
-    public $rws = [];
-    public $rt = [];
-    public $rts = [];
     public $chartWater = [];
     public $map = null;
     public $listeners = ['setDataFromWater'];
+    public $waters;
 
     public function mount($districts)
     {
@@ -33,12 +30,13 @@ class Water extends Component
         $areaName = explode('_', $type)[1] == 'Kec' ? $this->finalNeighborhood->district->name : $this->finalNeighborhood->village->name;
         $this->map = 'PETA/jenis/' . $type . '_' . $areaName . '.jpg';
     }
-    
-    public function setDataFromWater($neighborhood)
+
+    public function setDataFromWater($neighborhood, $waters)
     {
+        $this->waters = $waters;
         $neighborhood = Neighborhood::where('id', $neighborhood['id'])->first()->load('images', 'village', 'district', 'negative_list', 'house', 'water', 'sanitation');
         $this->finalNeighborhood = $neighborhood;
-        $this->map = 'PETA/administrasi/' . $neighborhood->district->name . '.jpg';
+        $this->map = 'PETA/negatif/' . 'Negatif_Kec_' . $neighborhood->district->name . '.jpg';
     }
 
     public function render()

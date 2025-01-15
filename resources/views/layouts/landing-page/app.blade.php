@@ -6,22 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
         @switch(true)
-        @case(request()->routeIs('landing-home'))
-            BERANDA
-        @break
+            @case(request()->routeIs('landing-home'))
+                BERANDA
+            @break
 
-        @case(request()->routeIs('sanitasi'))
-            SANITASI
-        @break
+            @case(request()->routeIs('sanitasi'))
+                SANITASI
+            @break
 
-        @case(request()->routeIs('air-bersih'))
-            AIR BERSIH
-        @break
+            @case(request()->routeIs('air-bersih'))
+                AIR BERSIH
+            @break
 
-        @case(request()->routeIs('import'))
-            IMPORT DATA
-        @break
-    @endswitch
+            @case(request()->routeIs('import'))
+                INTERVENSI PENANGANAN
+            @break
+
+            @case(request()->routeIs('lokasi-kawasan'))
+                DETAIL KAWASAN
+            @break
+        @endswitch
     </title>
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -30,6 +34,7 @@
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <style type="text/css">
         * {
             margin: 0;
@@ -137,8 +142,9 @@
                 margin-left: 0;
                 /* Hilangkan margin di mobile view */
             }
+
             .w-sm-100 {
-                width: 100% !important;   
+                width: 100% !important;
             }
         }
     </style>
@@ -155,6 +161,32 @@
         @yield('content')
     </div>
     <!-- Content -->
+    @if (session('error'))
+        <div class="modal fade" id="manual_book" aria-hidden="true" aria-labelledby="manual_book" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content text-center" style="width: 400px; height: 400px; padding-top: 100px;">
+                    <i class="far fa-circle-xmark text-danger" style="font-size: 100px;"></i>
+                    <div class="d-flex flex-column justify-content-center align-items-center" style="flex-grow: 1;">
+                        <h2><strong>{{ session('error') }}</strong></h2>
+                    </div>
+                    <div class="modal-footer" style="justify-content: center;">
+                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var sessionError = '{{ session('error') }}';
+                if (sessionError) {
+                    var modal = new mdb.Modal(document.getElementById('manual_book'));
+                    modal.show(); // Panggil metode show() untuk menampilkan modal
+                }
+            });
+        </script>
+    @endif
+
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.umd.min.js"></script>
     @livewireScripts

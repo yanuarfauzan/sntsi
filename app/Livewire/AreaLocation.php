@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Illuminate\Support\Facades\Log;
 
 class AreaLocation extends Component
 {
@@ -13,7 +12,6 @@ class AreaLocation extends Component
     public $negativeListMap = null;
     public function updatedRange($value)
     {
-        Log::info($value);
         $range = explode('_', $value)[1] == 'Kec' ? $this->neighborhood->district->name : $this->neighborhood->village->name;
         $this->negativeListMap = 'PETA/negatif/' . $value . '_' . $range . '.jpg';
     }
